@@ -7,6 +7,7 @@ public abstract class Character implements Comparable<Character> {
   private boolean defending;
   private String name;
   private DiceRoller roller;
+  private CharacterState state;
 
   /**
    * Creates a character with the provided attributes.
@@ -23,6 +24,7 @@ public abstract class Character implements Comparable<Character> {
     this.defending = false;
     this.initiativeScore = 0;
     this.roller = new DiceRoller();
+    this.state = CharacterState.ALIVE;
   }
 
   public int getInitiativeScore() {
@@ -45,7 +47,11 @@ public abstract class Character implements Comparable<Character> {
    * Generates an initiative value for the current character.
    */
   public void getInitiative() {
-
+    int roll = this.roller.rollDie(DiceTypes.D20);
+    this.initiativeScore = roll + this.initiativeModifier;
+    System.out.println(
+        String.format("%s rolled %d for initiative.", this.name, this.initiativeScore)
+    );
   }
 
   /**
@@ -55,18 +61,24 @@ public abstract class Character implements Comparable<Character> {
   public int attack() {
     // Reset the defending flag, because we're no longer defending.
     this.defending = false;
-    return 0;
+    int roll = this.roller.rollDie(DiceTypes.D8);
+    System.out.println(
+        String.format("%s attacks for %d damage.", this.name, (roll + this.attackModifier))
+    );
+    return roll + this.attackModifier;
   }
 
   /**
    * This method sets the character's defending flag to true, so damage may be halved.
    */
   public void defend() {
-
+    this.defending = true;
+    System.out.println(String.format("%s is defending.", this.name));
   }
 
   public void stopDefending() {
-
+    this.defending = false;
+    System.out.println(String.format("%s is no longer defending.", this.name));
   }
 
   /**
@@ -75,5 +87,36 @@ public abstract class Character implements Comparable<Character> {
    */
   public void takeDamage(int damage) {
     // If we are defending, we take half damage rounded down, otherwise, we take full damage.
+    int appliedDamage;
+    if (this.defending) {
+      double damageRaw = Math.floor(damage / 2.0);
+      appliedDamage = (int) damageRaw;
+    } else {
+      appliedDamage = damage;
+    }
+    this.hitPoints = this.hitPoints - appliedDamage;
+    System.out.println(
+        String.format("%s has sustained %d points of damage.", this.name, appliedDamage)
+    );
+    if (this.hitPoints <= 0) {
+      this.state = CharacterState.UNCONSCIOUS;
+    }
+    System.out.println(this.toString());
+  }
+
+  @Override
+  public int compareTo(Character char2) {
+    return Integer.compare(this.initiativeScore, char2.getInitiativeScore());
+  }
+
+  @Override
+  public String toString() {
+    if (this.state == CharacterState.UNCONSCIOUS) {
+      return String.format(
+          "%s has %d HP left. %s is unconscious.", this.name, this.hitPoints, this.name
+      );
+    } else {
+      return String.format("%s has %d HP left.", this.name, this.hitPoints);
+    }
   }
 }
