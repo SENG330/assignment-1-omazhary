@@ -85,10 +85,12 @@ public class Battle {
       } else {
         target = this.getRandomCharacterFromList(this.heroes);
       }
-      // Have the character attack the target
-      target.takeDamage(character.attack());
-      if (target.getHitPoints() <= 0) {
-        fallenCharacters.add(target);
+      // Have the character attack the target only if they are conscious
+      if (target.getState() == CharacterState.ALIVE) {
+        target.takeDamage(character.attack());
+        if (target.getState() == CharacterState.UNCONSCIOUS) {
+          fallenCharacters.add(target);
+        }
       }
     }
     // Go through the list of fallen characters to remove them from the battle queue

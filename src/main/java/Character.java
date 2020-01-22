@@ -35,6 +35,8 @@ public abstract class Character implements Comparable<Character> {
     return this.hitPoints;
   }
 
+  public CharacterState getState() { return this.state; }
+
   /**
    * This method checks whether or not this character is defending.
    * @return true if the character is defending, false otherwise.
