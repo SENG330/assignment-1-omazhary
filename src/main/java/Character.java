@@ -118,7 +118,7 @@ public abstract class Character implements Comparable<Character> {
           "%s has %d HP left. %s is unconscious.", this.name, this.hitPoints, this.name
       );
     } else {
-      return String.format("%s has %d HP left. %s is alive.", this.name, this.hitPoints, this.name);
+      return String.format("%s has %d HP left.", this.name, this.hitPoints);
     }
   }
 }
