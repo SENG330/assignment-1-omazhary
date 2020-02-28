@@ -1,8 +1,7 @@
 # Class Diagram
 
-![placeholder](./dilbert_software_reqs.png)
+![placeholder](./class_diagram_A1.png)
 
 ### Explanation
 
-> You can feel free to include any explanation about your diagram here. This is optional, and does not count towards your grade.
-> Place your class diagram in this directory's root (`assn-1/documents/.`) and update the link above appropriately.
+An ideal design would not make use of the abstract `Character` class (though this had no impact on your grade), because the inheritance relationships do not specialize the `Player` and `Monster` classes in any meaningful way.
