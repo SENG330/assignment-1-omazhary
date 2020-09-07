@@ -4,7 +4,7 @@ import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.*;
 
 @DisplayName("Player Test Class")
-public class InstructorTests {
+public class InstructorTest {
   private static Player player1;
   private static Player player2;
   private static Player monster1;
